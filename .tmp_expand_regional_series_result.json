@@ -1,0 +1,820 @@
+{
+  "eligible_series_count": 47,
+  "eligible_ingredient_count": 41,
+  "eligible_series_ids": [
+    3,
+    4,
+    6,
+    8,
+    10,
+    11,
+    12,
+    13,
+    14,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    44,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61
+  ],
+  "ingredient_codes": [
+    "F00006",
+    "F00280",
+    "F00426",
+    "F00494",
+    "F00550",
+    "F00622",
+    "F00623",
+    "F00624",
+    "F00630",
+    "F00632",
+    "F00702",
+    "F00730",
+    "F00872",
+    "F00919",
+    "F00952",
+    "F00993",
+    "F01001",
+    "F01015",
+    "F01028",
+    "F01129",
+    "F01149",
+    "F01165",
+    "F01186",
+    "F01200",
+    "F01251",
+    "F01257",
+    "F01334",
+    "F01340",
+    "F01364",
+    "F01370",
+    "F01488",
+    "F01922",
+    "F01931",
+    "F02056",
+    "F02057",
+    "F02058",
+    "F02072",
+    "F02514",
+    "F02537",
+    "F02586",
+    "F02599"
+  ],
+  "inserted_count": 90,
+  "inserted_series": [
+    {
+      "series_id": 68,
+      "ingredient_id": 6,
+      "item_code": "144",
+      "kind_code": "01",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 69,
+      "ingredient_id": 6,
+      "item_code": "144",
+      "kind_code": "01",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 70,
+      "ingredient_id": 163,
+      "item_code": "112",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 71,
+      "ingredient_id": 163,
+      "item_code": "112",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 72,
+      "ingredient_id": 259,
+      "item_code": "143",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 73,
+      "ingredient_id": 259,
+      "item_code": "143",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 74,
+      "ingredient_id": 291,
+      "item_code": "313",
+      "kind_code": "02",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 75,
+      "ingredient_id": 291,
+      "item_code": "313",
+      "kind_code": "02",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 76,
+      "ingredient_id": 291,
+      "item_code": "313",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 77,
+      "ingredient_id": 291,
+      "item_code": "313",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 78,
+      "ingredient_id": 314,
+      "item_code": "312",
+      "kind_code": "03",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 79,
+      "ingredient_id": 314,
+      "item_code": "312",
+      "kind_code": "03",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 80,
+      "ingredient_id": 314,
+      "item_code": "312",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 81,
+      "ingredient_id": 314,
+      "item_code": "312",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 82,
+      "ingredient_id": 314,
+      "item_code": "312",
+      "kind_code": "02",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 83,
+      "ingredient_id": 314,
+      "item_code": "312",
+      "kind_code": "02",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 84,
+      "ingredient_id": 354,
+      "item_code": "243",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 85,
+      "ingredient_id": 354,
+      "item_code": "243",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 86,
+      "ingredient_id": 355,
+      "item_code": "241",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 87,
+      "ingredient_id": 355,
+      "item_code": "241",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 88,
+      "ingredient_id": 356,
+      "item_code": "242",
+      "kind_code": "02",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 89,
+      "ingredient_id": 356,
+      "item_code": "242",
+      "kind_code": "02",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 90,
+      "ingredient_id": 359,
+      "item_code": "242",
+      "kind_code": "04",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 91,
+      "ingredient_id": 359,
+      "item_code": "242",
+      "kind_code": "04",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 92,
+      "ingredient_id": 360,
+      "item_code": "242",
+      "kind_code": "03",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 93,
+      "ingredient_id": 360,
+      "item_code": "242",
+      "kind_code": "03",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 94,
+      "ingredient_id": 392,
+      "item_code": "232",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 95,
+      "ingredient_id": 392,
+      "item_code": "232",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 96,
+      "ingredient_id": 404,
+      "item_code": "253",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 97,
+      "ingredient_id": 404,
+      "item_code": "253",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 98,
+      "ingredient_id": 461,
+      "item_code": "280",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 99,
+      "ingredient_id": 461,
+      "item_code": "280",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 100,
+      "ingredient_id": 480,
+      "item_code": "247",
+      "kind_code": "01",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 101,
+      "ingredient_id": 480,
+      "item_code": "247",
+      "kind_code": "01",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 102,
+      "ingredient_id": 480,
+      "item_code": "247",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 103,
+      "ingredient_id": 480,
+      "item_code": "247",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 104,
+      "ingredient_id": 489,
+      "item_code": "213",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 105,
+      "ingredient_id": 489,
+      "item_code": "213",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 108,
+      "ingredient_id": 521,
+      "item_code": "215",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 109,
+      "ingredient_id": 521,
+      "item_code": "215",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 110,
+      "ingredient_id": 525,
+      "item_code": "233",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 111,
+      "ingredient_id": 525,
+      "item_code": "233",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 112,
+      "ingredient_id": 563,
+      "item_code": "225",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 113,
+      "ingredient_id": 563,
+      "item_code": "225",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 114,
+      "ingredient_id": 575,
+      "item_code": "246",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 115,
+      "ingredient_id": 575,
+      "item_code": "246",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 116,
+      "ingredient_id": 581,
+      "item_code": "255",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 117,
+      "ingredient_id": 581,
+      "item_code": "255",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 118,
+      "ingredient_id": 594,
+      "item_code": "224",
+      "kind_code": "02",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 119,
+      "ingredient_id": 594,
+      "item_code": "224",
+      "kind_code": "02",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 120,
+      "ingredient_id": 596,
+      "item_code": "315",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 121,
+      "ingredient_id": 596,
+      "item_code": "315",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 122,
+      "ingredient_id": 609,
+      "item_code": "317",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 123,
+      "ingredient_id": 609,
+      "item_code": "317",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 124,
+      "ingredient_id": 610,
+      "item_code": "316",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 125,
+      "ingredient_id": 610,
+      "item_code": "316",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 126,
+      "ingredient_id": 652,
+      "item_code": "424",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 127,
+      "ingredient_id": 652,
+      "item_code": "424",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 128,
+      "ingredient_id": 655,
+      "item_code": "428",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 129,
+      "ingredient_id": 655,
+      "item_code": "428",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 130,
+      "ingredient_id": 670,
+      "item_code": "418",
+      "kind_code": "02",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 131,
+      "ingredient_id": 670,
+      "item_code": "418",
+      "kind_code": "02",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 132,
+      "ingredient_id": 675,
+      "item_code": "412",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 133,
+      "ingredient_id": 675,
+      "item_code": "412",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 134,
+      "ingredient_id": 747,
+      "item_code": "420",
+      "kind_code": "02",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 135,
+      "ingredient_id": 747,
+      "item_code": "420",
+      "kind_code": "02",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 136,
+      "ingredient_id": 873,
+      "item_code": "613",
+      "kind_code": "01",
+      "rank_code": "21",
+      "region": "부산"
+    },
+    {
+      "series_id": 137,
+      "ingredient_id": 873,
+      "item_code": "613",
+      "kind_code": "01",
+      "rank_code": "21",
+      "region": "대전"
+    },
+    {
+      "series_id": 138,
+      "ingredient_id": 875,
+      "item_code": "611",
+      "kind_code": "01",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 139,
+      "ingredient_id": 875,
+      "item_code": "611",
+      "kind_code": "01",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 140,
+      "ingredient_id": 906,
+      "item_code": "638",
+      "kind_code": "00",
+      "rank_code": "27",
+      "region": "부산"
+    },
+    {
+      "series_id": 141,
+      "ingredient_id": 906,
+      "item_code": "638",
+      "kind_code": "00",
+      "rank_code": "27",
+      "region": "대전"
+    },
+    {
+      "series_id": 142,
+      "ingredient_id": 907,
+      "item_code": "638",
+      "kind_code": "00",
+      "rank_code": "28",
+      "region": "부산"
+    },
+    {
+      "series_id": 143,
+      "ingredient_id": 907,
+      "item_code": "638",
+      "kind_code": "00",
+      "rank_code": "28",
+      "region": "대전"
+    },
+    {
+      "series_id": 144,
+      "ingredient_id": 908,
+      "item_code": "638",
+      "kind_code": "00",
+      "rank_code": "29",
+      "region": "부산"
+    },
+    {
+      "series_id": 145,
+      "ingredient_id": 908,
+      "item_code": "638",
+      "kind_code": "00",
+      "rank_code": "29",
+      "region": "대전"
+    },
+    {
+      "series_id": 146,
+      "ingredient_id": 919,
+      "item_code": "615",
+      "kind_code": "02",
+      "rank_code": "21",
+      "region": "부산"
+    },
+    {
+      "series_id": 147,
+      "ingredient_id": 919,
+      "item_code": "615",
+      "kind_code": "02",
+      "rank_code": "21",
+      "region": "대전"
+    },
+    {
+      "series_id": 148,
+      "ingredient_id": 919,
+      "item_code": "615",
+      "kind_code": "02",
+      "rank_code": "20",
+      "region": "부산"
+    },
+    {
+      "series_id": 149,
+      "ingredient_id": 919,
+      "item_code": "615",
+      "kind_code": "02",
+      "rank_code": "20",
+      "region": "대전"
+    },
+    {
+      "series_id": 150,
+      "ingredient_id": 1044,
+      "item_code": "654",
+      "kind_code": "01",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 151,
+      "ingredient_id": 1044,
+      "item_code": "654",
+      "kind_code": "01",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 152,
+      "ingredient_id": 1055,
+      "item_code": "619",
+      "kind_code": "05",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 153,
+      "ingredient_id": 1055,
+      "item_code": "619",
+      "kind_code": "05",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 154,
+      "ingredient_id": 1055,
+      "item_code": "619",
+      "kind_code": "04",
+      "rank_code": "05",
+      "region": "부산"
+    },
+    {
+      "series_id": 155,
+      "ingredient_id": 1055,
+      "item_code": "619",
+      "kind_code": "04",
+      "rank_code": "05",
+      "region": "대전"
+    },
+    {
+      "series_id": 156,
+      "ingredient_id": 1076,
+      "item_code": "660",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 157,
+      "ingredient_id": 1076,
+      "item_code": "660",
+      "kind_code": "01",
+      "rank_code": "04",
+      "region": "대전"
+    },
+    {
+      "series_id": 158,
+      "ingredient_id": 1082,
+      "item_code": "642",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "부산"
+    },
+    {
+      "series_id": 159,
+      "ingredient_id": 1082,
+      "item_code": "642",
+      "kind_code": "00",
+      "rank_code": "04",
+      "region": "대전"
+    }
+  ],
+  "prepared_regional_series_count": 94
+}

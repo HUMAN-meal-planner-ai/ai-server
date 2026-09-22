@@ -1,0 +1,44 @@
+{
+  "created_at": "2026-09-22T03:39:42.893510+00:00",
+  "source_snapshot": "D:\\ai_final_PRJ\\ai-server\\training\\price\\snapshots\\price_features_as_of_2026-09-18.csv",
+  "evaluation_split": "validation",
+  "train_end": "2026-06-18",
+  "validation_end": "2026-08-04",
+  "validation_rows": 1480,
+  "sequence_lengths": [
+    7,
+    14,
+    30
+  ],
+  "hidden_sizes": [
+    16,
+    32,
+    64
+  ],
+  "best_dl": {
+    "model": "lstm",
+    "sequence_length": 14,
+    "hidden_size": 64,
+    "mae": 0.40021305144799724
+  },
+  "baseline_mae": 0.12327432432432431,
+  "best_dl_beats_baseline": false,
+  "train_sequence_count_range": {
+    "7": {
+      "minimum": 112,
+      "maximum": 142,
+      "mean": 141.36170212765958
+    },
+    "14": {
+      "minimum": 105,
+      "maximum": 135,
+      "mean": 134.36170212765958
+    },
+    "30": {
+      "minimum": 89,
+      "maximum": 119,
+      "mean": 118.36170212765957
+    }
+  },
+  "model_artifacts_saved": false
+}

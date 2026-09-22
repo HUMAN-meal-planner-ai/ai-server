@@ -1,0 +1,114 @@
+{
+  "created_at": "2026-09-22T02:23:21.130786+00:00",
+  "source_tables": [
+    "mealfit.price_series",
+    "mealfit.ingredient_price"
+  ],
+  "source_name": "KAMIS",
+  "minimum_observations": 200,
+  "lag_semantics": "series별 관측치 기준",
+  "target_column": "target_standard_unit_price",
+  "target_unit": "원/g",
+  "feature_columns": [
+    "lag_1",
+    "lag_7",
+    "lag_14",
+    "lag_30",
+    "rolling_mean_7",
+    "rolling_mean_14",
+    "rolling_mean_30",
+    "rolling_std_7",
+    "pct_change_1",
+    "pct_change_7",
+    "days_since_previous",
+    "day_of_week",
+    "month",
+    "season"
+  ],
+  "audit_columns": [
+    "original_price"
+  ],
+  "eligible_series_count": 47,
+  "feature_row_count": 9881,
+  "first_feature_date": "2025-11-10",
+  "last_feature_date": "2026-09-18",
+  "excluded_series": [
+    {
+      "series_id": 5,
+      "ingredient_code": "F00223",
+      "ingredient_name": "보리, 쌀보리, 찰보리, 도정, 생것",
+      "observation_count": 14,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 7,
+      "ingredient_code": "F00426",
+      "ingredient_name": "녹두, 말린것",
+      "observation_count": 14,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 9,
+      "ingredient_code": "F00426",
+      "ingredient_name": "녹두, 말린것",
+      "observation_count": 14,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 15,
+      "ingredient_code": "F00576",
+      "ingredient_name": "가지, 생것",
+      "observation_count": 14,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 42,
+      "ingredient_code": "F01439",
+      "ingredient_name": "오렌지, 생것",
+      "observation_count": 95,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 43,
+      "ingredient_code": "F01484",
+      "ingredient_name": "키위, 골드, 생것",
+      "observation_count": 14,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 45,
+      "ingredient_code": "F01506",
+      "ingredient_name": "포도, 거봉, 생것, 껍질 포함",
+      "observation_count": 72,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 46,
+      "ingredient_code": "F01512",
+      "ingredient_name": "포도, 샤인머스캣, 생것, 껍질 포함",
+      "observation_count": 175,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 47,
+      "ingredient_code": "F01517",
+      "ingredient_name": "포도, 캠벨얼리, 생것",
+      "observation_count": 73,
+      "reason": "200건 미만"
+    },
+    {
+      "series_id": 48,
+      "ingredient_code": "F01599",
+      "ingredient_name": "돼지고기, 갈비, 생것",
+      "observation_count": 0,
+      "reason": "가격 데이터 없음"
+    },
+    {
+      "series_id": 49,
+      "ingredient_code": "F01617",
+      "ingredient_name": "돼지고기, 목심, 생것",
+      "observation_count": 0,
+      "reason": "가격 데이터 없음"
+    }
+  ]
+}
