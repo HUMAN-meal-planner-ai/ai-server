@@ -7,21 +7,24 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from sklearn.linear_model import Ridge
 from sklearn.metrics import balanced_accuracy_score
 
 from training.price.analyze_weekly_forecast import MAX_TARGET_COLUMN
 from training.price.compare_regional_weekly_models import (
     DEFAULT_EVALUATION_DIRECTORY,
     DEFAULT_SNAPSHOT,
+    build_expanding_folds,
+    build_preprocessor,
     load_snapshot,
     select_fold_rows,
 )
-
-
-RIDGE_PREDICTIONS = (
-    DEFAULT_EVALUATION_DIRECTORY
-    / "weekly_target_design_comparison_as_of_2026-09-15.predictions.csv"
+from training.price.compare_weekly_target_designs import (
+    build_prediction_frame as build_model_prediction_frame,
+    training_large_rise_threshold,
 )
+
+
 BASELINES = (
     "always_rise",
     "current_price_persistence",
@@ -38,7 +41,7 @@ def main() -> None:
     frame = load_snapshot(arguments.snapshot)
     if "max_7d" not in frame.columns:
         raise ValueError("최근 최고가 persistence 비교에 필요한 max_7d 컬럼이 없습니다.")
-    ridge = load_ridge_predictions(arguments.predictions)
+    ridge = build_max_ridge_predictions(frame)
 
     prediction_frames = []
     threshold_rows = []
@@ -128,7 +131,6 @@ def main() -> None:
         by_fold,
         pd.DataFrame(threshold_rows),
         arguments.snapshot,
-        arguments.predictions,
     )
     print(overall.to_string(index=False))
 
@@ -136,24 +138,38 @@ def main() -> None:
 def _parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="7일 최대가격 Ridge와 단순 위험 baseline 비교")
     parser.add_argument("--snapshot", type=Path, default=DEFAULT_SNAPSHOT)
-    parser.add_argument("--predictions", type=Path, default=RIDGE_PREDICTIONS)
     parser.add_argument(
         "--output-directory", type=Path, default=DEFAULT_EVALUATION_DIRECTORY
     )
     return parser.parse_args()
 
 
-def load_ridge_predictions(path: Path) -> pd.DataFrame:
-    if not path.exists():
-        raise FileNotFoundError("최대가격 Ridge 예측 결과를 찾을 수 없습니다: " + str(path))
-    predictions = pd.read_csv(path, parse_dates=["base_date"])
-    selected = predictions[
-        (predictions["target"] == MAX_TARGET_COLUMN)
-        & (predictions["model"] == "ridge")
-    ].copy()
-    if selected.empty:
-        raise ValueError("최대가격 Ridge 예측 결과가 비어 있습니다.")
-    return selected.sort_values(["fold", "base_date", "series_id"], kind="stable")
+def build_max_ridge_predictions(frame: pd.DataFrame) -> pd.DataFrame:
+    prediction_frames = []
+    for fold_number, evaluation_start, evaluation_end in build_expanding_folds(frame):
+        train, evaluation = select_fold_rows(frame, evaluation_start, evaluation_end)
+        preprocessor = build_preprocessor()
+        preprocessor.fit(train)
+        x_train = np.asarray(preprocessor.transform(train), dtype=np.float32)
+        x_evaluation = np.asarray(
+            preprocessor.transform(evaluation), dtype=np.float32
+        )
+        model = Ridge(alpha=1.0)
+        model.fit(x_train, train[MAX_TARGET_COLUMN].to_numpy(dtype=float))
+        prediction_frames.append(
+            build_model_prediction_frame(
+                MAX_TARGET_COLUMN,
+                "ridge",
+                fold_number,
+                evaluation,
+                evaluation[MAX_TARGET_COLUMN].to_numpy(dtype=float),
+                model.predict(x_evaluation),
+                training_large_rise_threshold(train, MAX_TARGET_COLUMN),
+            )
+        )
+    return pd.concat(prediction_frames, ignore_index=True).sort_values(
+        ["fold", "base_date", "series_id"], kind="stable"
+    )
 
 
 def align_evaluation(evaluation: pd.DataFrame, ridge: pd.DataFrame) -> pd.DataFrame:
@@ -261,7 +277,6 @@ def write_results(
     by_fold: pd.DataFrame,
     thresholds: pd.DataFrame,
     snapshot_path: Path,
-    ridge_predictions_path: Path,
 ) -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     maximum_date = predictions["base_date"].max().date().isoformat()
@@ -273,7 +288,7 @@ def write_results(
     metadata = {
         "created_at": datetime.now(UTC).isoformat(),
         "source_snapshot": str(snapshot_path),
-        "ridge_predictions": str(ridge_predictions_path),
+        "ridge_predictions": "source snapshot에서 outer fold별로 재생성",
         "positive_label": "기존 실험과 동일한 fold별 next_7d_max_price 큰 상승",
         "threshold_selection": "각 outer fold train에서 F1, balanced accuracy 순으로 선택",
         "evaluation_sample_changed": False,

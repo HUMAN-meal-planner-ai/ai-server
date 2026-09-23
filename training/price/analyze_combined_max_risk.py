@@ -10,10 +10,9 @@ import pandas as pd
 from sklearn.linear_model import Ridge
 
 from training.price.analyze_max_risk_baselines import (
-    RIDGE_PREDICTIONS,
     align_evaluation,
     binary_metrics,
-    load_ridge_predictions,
+    build_max_ridge_predictions,
     select_signal_threshold,
 )
 from training.price.analyze_weekly_forecast import MAX_TARGET_COLUMN
@@ -39,7 +38,7 @@ TOP_COUNTS = (5, 10)
 def main() -> None:
     arguments = _parse_arguments()
     frame = load_snapshot(arguments.snapshot)
-    ridge_predictions = load_ridge_predictions(arguments.predictions)
+    ridge_predictions = build_max_ridge_predictions(frame)
 
     prediction_frames = []
     threshold_rows = []
@@ -162,7 +161,6 @@ def main() -> None:
         top_n_folds,
         pd.DataFrame(threshold_rows),
         arguments.snapshot,
-        arguments.predictions,
     )
     print(overall.to_string(index=False))
     print("\n날짜별 Top-N")
@@ -172,7 +170,6 @@ def main() -> None:
 def _parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Ridge와 최근 변동성 결합 위험 탐지 검증")
     parser.add_argument("--snapshot", type=Path, default=DEFAULT_SNAPSHOT)
-    parser.add_argument("--predictions", type=Path, default=RIDGE_PREDICTIONS)
     parser.add_argument(
         "--output-directory", type=Path, default=DEFAULT_EVALUATION_DIRECTORY
     )
@@ -259,7 +256,6 @@ def write_results(
     top_n_folds: pd.DataFrame,
     thresholds: pd.DataFrame,
     snapshot_path: Path,
-    ridge_predictions_path: Path,
 ) -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     maximum_date = predictions["base_date"].max().date().isoformat()
@@ -282,7 +278,7 @@ def write_results(
     metadata = {
         "created_at": datetime.now(UTC).isoformat(),
         "source_snapshot": str(snapshot_path),
-        "ridge_predictions": str(ridge_predictions_path),
+        "ridge_predictions": "source snapshot에서 outer fold별로 재생성",
         "positive_label": "기존 실험과 동일한 fold별 next_7d_max_price 큰 상승",
         "score_calibration": "각 outer fold train 기준 경험적 percentile",
         "combined_score": "Ridge percentile과 변동성 percentile의 동일 가중 평균",

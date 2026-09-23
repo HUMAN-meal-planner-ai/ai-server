@@ -11,10 +11,9 @@ from sklearn.linear_model import Ridge
 
 from training.price.analyze_combined_max_risk import empirical_percentile
 from training.price.analyze_max_risk_baselines import (
-    RIDGE_PREDICTIONS,
     align_evaluation,
     binary_metrics,
-    load_ridge_predictions,
+    build_max_ridge_predictions,
 )
 from training.price.analyze_weekly_forecast import MAX_TARGET_COLUMN
 from training.price.compare_regional_weekly_models import (
@@ -48,7 +47,7 @@ TARGET_RECALLS = (0.60, 0.70, 0.80)
 def main() -> None:
     arguments = _parse_arguments()
     frame = load_snapshot(arguments.snapshot)
-    ridge_predictions = load_ridge_predictions(arguments.predictions)
+    ridge_predictions = build_max_ridge_predictions(frame)
 
     evaluation_frames = []
     operating_frames = []
@@ -125,7 +124,6 @@ def main() -> None:
         operating_folds,
         threshold_frame,
         arguments.snapshot,
-        arguments.predictions,
     )
     print("고정 threshold sweep")
     print(fixed_sweep.to_string(index=False))
@@ -136,7 +134,6 @@ def main() -> None:
 def _parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Ridge와 변동성 결합 score threshold 분석")
     parser.add_argument("--snapshot", type=Path, default=DEFAULT_SNAPSHOT)
-    parser.add_argument("--predictions", type=Path, default=RIDGE_PREDICTIONS)
     parser.add_argument(
         "--output-directory", type=Path, default=DEFAULT_EVALUATION_DIRECTORY
     )
@@ -249,7 +246,6 @@ def write_results(
     operating_folds: pd.DataFrame,
     operating_thresholds: pd.DataFrame,
     snapshot_path: Path,
-    ridge_predictions_path: Path,
 ) -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     maximum_date = evaluations["base_date"].max().date().isoformat()
@@ -267,7 +263,7 @@ def write_results(
     metadata = {
         "created_at": datetime.now(UTC).isoformat(),
         "source_snapshot": str(snapshot_path),
-        "ridge_predictions": str(ridge_predictions_path),
+        "ridge_predictions": "source snapshot에서 outer fold별로 재생성",
         "fixed_sweep_usage": "평가 민감도 분석 전용이며 운영 threshold 선택에 직접 사용하지 않음",
         "recall_threshold_selection": "각 outer fold train에서 목표 Recall을 만족하는 가장 높은 threshold",
         "ranking_strategy_changed": False,
