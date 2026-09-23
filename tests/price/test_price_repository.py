@@ -38,6 +38,42 @@ class PriceDataRepositoryTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "1건 이상"):
             PriceDataRepository(MagicMock()).load_eligible_prices(0)
 
+    def test_regional_representative_price_query_requires_all_three_regions(self) -> None:
+        map_cursor = MagicMock()
+        map_cursor.__enter__.return_value = map_cursor
+        map_cursor.description = [
+            SimpleNamespace(name=name)
+            for name in ("series_id", "regional_series_id", "region", "ingredient_code")
+        ]
+        map_cursor.fetchall.return_value = [
+            (3, 3, "서울", "F00993"),
+            (3, 62, "부산", "F00993"),
+            (3, 63, "대전", "F00993"),
+        ]
+        price_cursor = MagicMock()
+        price_cursor.__enter__.return_value = price_cursor
+        price_cursor.description = [
+            SimpleNamespace(name=name)
+            for name in (
+                "series_id",
+                "price_date",
+                "representative_standard_unit_price",
+            )
+        ]
+        price_cursor.fetchall.return_value = [(3, "2026-09-15", 2.5)]
+        connection = MagicMock()
+        connection.cursor.side_effect = [map_cursor, price_cursor]
+
+        result = PriceDataRepository(connection).load_regional_representative_prices(200)
+
+        map_sql, map_parameters = map_cursor.execute.call_args.args
+        price_sql, price_parameters = price_cursor.execute.call_args.args
+        self.assertIn("regional.region IN", map_sql)
+        self.assertIn("AVG(price.standard_unit_price)", price_sql)
+        self.assertEqual(([4, 50, 59],), map_parameters)
+        self.assertEqual(([3, 3, 3], [3, 62, 63], 200), price_parameters)
+        self.assertEqual([3], result["series_id"].tolist())
+
 
 if __name__ == "__main__":
     unittest.main()
