@@ -1,51 +1,74 @@
-import psycopg
+from functools import lru_cache
 from pathlib import Path
+
+import psycopg
 from dotenv import dotenv_values
 from FlagEmbedding import BGEM3FlagModel
 
-# 백엔드의 기존 DB 접속 정보 읽기
-env_path = Path(__file__).resolve().parents[3] / "backend_new" / ".env"
-env = dotenv_values(env_path)
+from app.rag.query_parser import parse_query
 
-# 메뉴 임베딩에 사용한 모델과 동일한 모델 사용
-model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=False)
 
-# 사용자가 검색어 입력
-query = input("검색어를 입력하세요: ")
+@lru_cache(maxsize=1)
+def get_model():
+    return BGEM3FlagModel("BAAI/bge-m3", use_fp16=False)
 
-# 검색어를 1024차원 벡터로 변환
-result = model.encode(
-    [query],
-    max_length=128,
-    return_dense=True,
-    return_sparse=False,
-    return_colbert_vecs=False,
-)
 
-vector = result["dense_vecs"][0]
-vector_text = "[" + ",".join(map(str, vector)) + "]"
+def search_menus(query: str):
+    conditions = parse_query(query)
+    category = conditions.get("category")
 
-# DB에 저장된 메뉴 벡터와 유사도 비교
-sql = """
-SELECT menu_code, content,
-       embedding <=> %s::vector AS distance
-FROM mealfit.rag_document
-WHERE embedding_model = 'BAAI/bge-m3'
-ORDER BY distance
-LIMIT 5
-"""
+    if conditions.get("max_price") is not None:
+        raise ValueError("가격 조건 검색은 메뉴별 원가 데이터 연결 후 가능합니다.")
 
-with psycopg.connect(
-    env["DB_URL"].removeprefix("jdbc:"),
-    user=env["DB_USERNAME"],
-    password=env["DB_PASSWORD"],
-) as conn:
-    with conn.cursor() as cur:
-        cur.execute(sql, (vector_text,))
-        menus = cur.fetchall()
+    result = get_model().encode(
+        [query],
+        max_length=128,
+        return_dense=True,
+        return_sparse=False,
+        return_colbert_vecs=False,
+    )
+    vector = "[" + ",".join(map(str, result["dense_vecs"][0])) + "]"
 
-# 검색 결과 출력
-print("\n검색 결과 TOP 5")
-for menu_code, content, distance in menus:
-    print(f"\n[{menu_code}] {content}")
-    print(f"벡터 거리: {distance:.4f}")
+    sql = """
+        SELECT r.menu_code, m.name, m.upper_category, m.category,
+               r.embedding <=> %s::vector AS distance
+        FROM mealfit.rag_document r
+        JOIN mealfit.menu m ON r.menu_code = m.menu_code
+        WHERE r.embedding_model = 'BAAI/bge-m3'
+    """
+    params = [vector]
+
+    if category:
+        sql += " AND (m.upper_category ILIKE %s OR m.category ILIKE %s)"
+        params.extend([f"%{category}%", f"%{category}%"])
+
+    sql += " ORDER BY distance LIMIT 8"
+
+    env_path = Path(__file__).resolve().parents[3] / "backend_new" / ".env"
+    env = dotenv_values(env_path)
+
+    with psycopg.connect(
+        env["DB_URL"].removeprefix("jdbc:"),
+        user=env["DB_USERNAME"],
+        password=env["DB_PASSWORD"],
+    ) as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, params)
+            rows = cur.fetchall()
+
+    return [
+        {
+            "menu_code": code,
+            "name": name,
+            "main_category": main,
+            "sub_category": sub,
+            "distance": float(distance),
+        }
+        for code, name, main, sub, distance in rows
+    ]
+
+
+if __name__ == "__main__":
+    query = input("검색어를 입력하세요: ")
+    for menu in search_menus(query):
+        print(menu)
