@@ -2,12 +2,11 @@ import json
 from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()  # ai-server/.env에서 OPENAI_API_KEY 읽기
+load_dotenv()
 client = OpenAI()
 
 
 def parse_query(question: str) -> dict:
-    # LLM에게 질문에서 조건만 추출하도록 요청
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         response_format={"type": "json_object"},
@@ -28,8 +27,3 @@ def parse_query(question: str) -> dict:
     )
 
     return json.loads(response.choices[0].message.content)
-
-
-if __name__ == "__main__":
-    question = input("질문을 입력하세요: ")
-    print(parse_query(question))
