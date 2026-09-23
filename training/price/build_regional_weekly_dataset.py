@@ -9,7 +9,9 @@ import pandas as pd
 
 from training.price.analyze_weekly_forecast import (
     CATEGORICAL_FEATURES,
+    MAX_TARGET_COLUMN,
     NUMERIC_FEATURES,
+    RETURN_TARGET_COLUMN,
     TARGET_COLUMN,
     build_weekly_forecast_frame,
 )
@@ -112,8 +114,13 @@ def _write_snapshot(
         "included_regions": ["서울", "부산", "대전"],
         "excluded_source_series_ids": list(EXCLUDED_SOURCE_SERIES_IDS),
         "minimum_complete_observations": minimum_observations,
-        "target_column": TARGET_COLUMN,
-        "target_definition": "기준일 다음날부터 7일 이내 실제 공시 대표가격의 평균; 최소 3개 관측일 필요",
+        "target_columns": [TARGET_COLUMN, MAX_TARGET_COLUMN, RETURN_TARGET_COLUMN],
+        "target_definitions": {
+            TARGET_COLUMN: "기준일 다음날부터 7일 이내 실제 공시 대표가격의 평균",
+            MAX_TARGET_COLUMN: "기준일 다음날부터 7일 이내 실제 공시 대표가격의 최댓값",
+            RETURN_TARGET_COLUMN: "현재 대표가격 대비 다음 7일 실제 공시 대표가격 평균의 변화율",
+        },
+        "minimum_future_observations": 3,
         "numeric_feature_columns": list(NUMERIC_FEATURES),
         "categorical_feature_columns": [*CATEGORICAL_FEATURES, "ingredient_code"],
         "source_series_count": int(representative_prices["series_id"].nunique()),

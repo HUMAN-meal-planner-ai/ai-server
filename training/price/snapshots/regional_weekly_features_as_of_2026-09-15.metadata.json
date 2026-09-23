@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-09-23T02:35:52.779289+00:00",
+  "created_at": "2026-09-23T03:53:33.081170+00:00",
   "source_tables": [
     "mealfit.price_series",
     "mealfit.ingredient_price"
@@ -16,8 +16,17 @@
     59
   ],
   "minimum_complete_observations": 200,
-  "target_column": "next_7d_mean_price",
-  "target_definition": "기준일 다음날부터 7일 이내 실제 공시 대표가격의 평균; 최소 3개 관측일 필요",
+  "target_columns": [
+    "next_7d_mean_price",
+    "next_7d_max_price",
+    "next_7d_return"
+  ],
+  "target_definitions": {
+    "next_7d_mean_price": "기준일 다음날부터 7일 이내 실제 공시 대표가격의 평균",
+    "next_7d_max_price": "기준일 다음날부터 7일 이내 실제 공시 대표가격의 최댓값",
+    "next_7d_return": "현재 대표가격 대비 다음 7일 실제 공시 대표가격 평균의 변화율"
+  },
+  "minimum_future_observations": 3,
   "numeric_feature_columns": [
     "current_price",
     "lag_1_observation",

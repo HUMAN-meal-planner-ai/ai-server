@@ -8,14 +8,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.linear_model import Ridge
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from training.price.compare_models import DEFAULT_OUTPUT_DIRECTORY
 from training.price.config import DatabaseSettings
 from training.price.database import open_read_only_connection
 from training.price.evaluation_metrics import calculate_metrics
-from training.price.feature_engineering import _season_for_month
-from training.price.model_definitions import build_tabular_models
 from training.price.price_repository import PriceDataRepository
 from training.price.time_split import determine_time_boundaries
 
@@ -27,6 +26,8 @@ ROLLING_FOLD_COUNT = 3
 LARGE_CHANGE_QUANTILE = 0.75
 CHANGE_TOLERANCE = 1e-12
 TARGET_COLUMN = "next_7d_mean_price"
+MAX_TARGET_COLUMN = "next_7d_max_price"
+RETURN_TARGET_COLUMN = "next_7d_return"
 CANDIDATE_MODELS = ("baseline_lag_1", "ridge", "gradient_boosting")
 NUMERIC_FEATURES = (
     "current_price",
@@ -50,6 +51,7 @@ NUMERIC_FEATURES = (
     "month",
 )
 CATEGORICAL_FEATURES = ("season", "series_id")
+DEFAULT_OUTPUT_DIRECTORY = Path(__file__).resolve().parent / "evaluation"
 
 
 def main() -> None:
@@ -169,12 +171,15 @@ def build_weekly_forecast_frame(prices: pd.DataFrame) -> pd.DataFrame:
                 continue
 
             current_price = values[index]
+            future_mean = float(np.mean(future_values))
             feature_row = {
                 "series_id": series_id,
                 "base_date": base_date,
                 "target_end_date": target_end,
                 "future_observation_count": len(future_values),
-                TARGET_COLUMN: float(np.mean(future_values)),
+                TARGET_COLUMN: future_mean,
+                MAX_TARGET_COLUMN: float(np.max(future_values)),
+                RETURN_TARGET_COLUMN: future_mean / current_price - 1,
                 "current_price": current_price,
                 "lag_1_observation": values[index - 1],
                 "day_of_week": base_date.dayofweek,
@@ -193,6 +198,9 @@ def build_weekly_forecast_frame(prices: pd.DataFrame) -> pd.DataFrame:
                 feature_row[f"mean_{days}d"] = float(np.mean(window_values))
                 feature_row[f"std_{days}d"] = float(np.std(window_values, ddof=0))
                 feature_row[f"return_{days}d"] = current_price / lag_value - 1
+                if days == 7:
+                    # 모델 입력에는 포함하지 않고 최근 최고가 persistence 비교에만 사용한다.
+                    feature_row["max_7d"] = float(np.max(window_values))
 
             feature_row["return_1_observation"] = (
                 current_price / feature_row["lag_1_observation"] - 1
@@ -326,6 +334,29 @@ def build_preprocessor() -> ColumnTransformer:
         remainder="drop",
         verbose_feature_names_out=False,
     )
+
+
+def build_tabular_models() -> dict[str, object]:
+    return {
+        "ridge": Ridge(alpha=1.0),
+        "gradient_boosting": GradientBoostingRegressor(
+            learning_rate=0.05,
+            n_estimators=200,
+            max_depth=3,
+            min_samples_leaf=10,
+            random_state=42,
+        ),
+    }
+
+
+def _season_for_month(month: int) -> str:
+    if month in (3, 4, 5):
+        return "SPRING"
+    if month in (6, 7, 8):
+        return "SUMMER"
+    if month in (9, 10, 11):
+        return "AUTUMN"
+    return "WINTER"
 
 
 def training_large_change_threshold(train: pd.DataFrame) -> float:

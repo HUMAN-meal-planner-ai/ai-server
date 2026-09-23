@@ -1,4 +1,0 @@
-model,large_change_precision_percent,large_change_recall_percent,large_change_f1_percent
-baseline_lag_1,0.0,0.0,0.0
-gradient_boosting,32.0,12.121212121212121,17.58241758241758
-ridge,33.33333333333333,15.909090909090908,21.538461538461537

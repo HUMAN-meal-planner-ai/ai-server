@@ -4,7 +4,11 @@ import unittest
 
 import pandas as pd
 
-from training.price.analyze_weekly_forecast import TARGET_COLUMN
+from training.price.analyze_weekly_forecast import (
+    MAX_TARGET_COLUMN,
+    RETURN_TARGET_COLUMN,
+    TARGET_COLUMN,
+)
 from training.price.build_regional_weekly_dataset import build_regional_weekly_dataset
 
 
@@ -27,6 +31,8 @@ class RegionalWeeklyDatasetTest(unittest.TestCase):
 
         self.assertEqual("F00993", row["ingredient_code"])
         self.assertEqual(132.0, row[TARGET_COLUMN])
+        self.assertEqual(135.0, row[MAX_TARGET_COLUMN])
+        self.assertAlmostEqual(132.0 / 128.0 - 1, row[RETURN_TARGET_COLUMN])
         self.assertEqual(7, row["future_observation_count"])
 
     def test_future_change_does_not_change_features_at_base_date(self) -> None:

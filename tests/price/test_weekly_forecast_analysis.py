@@ -5,6 +5,8 @@ import unittest
 import pandas as pd
 
 from training.price.analyze_weekly_forecast import (
+    MAX_TARGET_COLUMN,
+    RETURN_TARGET_COLUMN,
     TARGET_COLUMN,
     annotate_predictions,
     build_weekly_forecast_frame,
@@ -28,6 +30,9 @@ class WeeklyForecastAnalysisTest(unittest.TestCase):
 
         self.assertEqual(128.0, row["current_price"])
         self.assertEqual(132.0, row[TARGET_COLUMN])
+        self.assertEqual(135.0, row[MAX_TARGET_COLUMN])
+        self.assertAlmostEqual(132.0 / 128.0 - 1, row[RETURN_TARGET_COLUMN])
+        self.assertEqual(128.0, row["max_7d"])
         self.assertEqual(7, row["future_observation_count"])
 
     def test_future_change_does_not_change_base_features(self) -> None:
