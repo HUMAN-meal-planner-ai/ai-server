@@ -1,10 +1,10 @@
 from pathlib import Path
 import numpy as np
 from FlagEmbedding import BGEM3FlagModel
-from app.rag.menu_loader import load_menu_documents
+from app.rag.menu_loader import load_menu_documents_from_db
 
-#csv에서 전체 메뉴를 RAG 문서로 불러오기
-documents = load_menu_documents("dataset/MENU_MASTER_v1.csv")
+# DB에서 메뉴 + 식재료 정보를 RAG 문서로 불러오기
+documents = load_menu_documents_from_db()
 
 #메뉴 코드와 임베딩할 문장을 각각 준비
 menu_codes = [doc["id"] for doc in documents]
@@ -25,7 +25,7 @@ model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=False)
 result = model.encode(
     texts,
     batch_size=2,
-    max_length=128,
+    max_length=256,
     return_dense=True,
     return_sparse=False,
     return_colbert_vecs=False,

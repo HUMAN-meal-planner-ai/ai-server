@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Header
 from pydantic import BaseModel
 
 from app.rag.search_menus import search_menus
@@ -11,5 +11,13 @@ class SearchRequest(BaseModel):
 
 
 @router.post("/search")
-def search_menu(request: SearchRequest):
-    return {"menus": search_menus(request.query)}
+def search_menu(
+    request: SearchRequest,
+    authorization: str | None = Header(default=None),
+):
+    return {
+    "menus": search_menus(
+        request.query,
+        authorization=authorization,
+    )
+}

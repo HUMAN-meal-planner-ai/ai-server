@@ -49,4 +49,82 @@ def load_menu_documents(csv_path: str | Path) -> list[dict]:
 
     # CSV의 모든 메뉴를 처리한 뒤 문서 목록 전체를 반환
     return documents
-    
+    from pathlib import Path
+
+import psycopg
+from dotenv import dotenv_values
+
+
+def load_menu_documents_from_db():
+    env_path = Path(__file__).resolve().parents[3] / "backend_new" / ".env"
+    env = dotenv_values(env_path)
+
+    sql = """
+        SELECT
+            m.menu_code,
+            m.name,
+            m.upper_category,
+            m.category,
+            m.slot_type,
+            STRING_AGG(
+                DISTINCT i.name,
+                ', '
+                ORDER BY i.name
+            ) AS ingredients
+        FROM mealfit.menu m
+        LEFT JOIN mealfit.menu_ingredient mi
+            ON mi.menu_id = m.menu_id
+        LEFT JOIN mealfit.ingredient i
+            ON i.ingredient_id = mi.ingredient_id
+        GROUP BY
+            m.menu_code,
+            m.name,
+            m.upper_category,
+            m.category,
+            m.slot_type
+        ORDER BY m.menu_code
+    """
+
+    with psycopg.connect(
+        env["DB_URL"].removeprefix("jdbc:"),
+        user=env["DB_USERNAME"],
+        password=env["DB_PASSWORD"],
+    ) as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            rows = cur.fetchall()
+
+    documents = []
+
+    for (
+        menu_code,
+        name,
+        upper_category,
+        category,
+        slot_type,
+        ingredients,
+    ) in rows:
+
+        text = (
+            f"메뉴명: {name}\n"
+            f"대분류: {upper_category or ''}\n"
+            f"소분류: {category or ''}\n"
+            f"식단 슬롯: {slot_type or ''}\n"
+            f"식재료: {ingredients or ''}"
+        )
+
+        documents.append(
+            {
+                "id": menu_code,
+                "text": text,
+                "metadata": {
+                    "menu_code": menu_code,
+                    "name": name,
+                    "upper_category": upper_category,
+                    "category": category,
+                    "slot_type": slot_type,
+                },
+            }
+        )
+
+    return documents
