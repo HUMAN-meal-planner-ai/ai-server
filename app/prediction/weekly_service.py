@@ -137,14 +137,12 @@ class WeeklyPricePredictionService:
             feature.iloc[0]["base_date"]
         ).date()
 
-        # 현재가격은 서울·부산·대전의
-        # 가장 최근 대표가격 평균이다.
-        base_price = Decimal(
-            str(
-                feature.iloc[0][
-                    "current_price"
-                ]
-            )
+        # feature 계산은 float를 사용하지만 응답의 기준가격은
+        # Backend가 전달한 Decimal을 그대로 유지해 검증·저장 정밀도를 보장한다.
+        base_price = next(
+            point.representative_price
+            for point in series.prices
+            if point.price_date == base_date
         )
 
         # 다음 7일 평균 예상가격.
