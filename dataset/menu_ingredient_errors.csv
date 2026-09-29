@@ -1,0 +1,23 @@
+﻿menu_fd_Code,menu_fd_Nm,menu_upper_Fd_Group_Nm,menu_fd_Group_Nm,menu_fd_Wgh,ingredient_fd_Code,ingredient_food_Code,ingredient_food_Nm,ingredient_fd_Eng_Nm,ingredient_nation_Std_Food_Grupp_Code_Nm,ingredient_origin_Code_Nm,ingredient_food_Wgh,ingredient_allrgy_Info,ingredient_onslf_Std_Food_Grupp_Nm,ingredient_amplt_Cl_Nm,menu_id,menu_code,ingredient_id,ingredient_code,name,standard_unit,raw_quantity,error_reason
+D012064,오곡연잎밥,,,207.7,D012064,F03015,연잎밥,"Yeonipbap, Cooked rice with lotus leaf",조리가공식품류,농진청,0.0,,,,59,D012064,1322,F03015,연잎밥,g,0.0,INVALID_QUANTITY;
+D013024,단호박약식,,,99.3,D013024,F03083,"치자꽃, 생것","Cape-jasmine flower, Raw",기타,농진청,0.0,,,,130,D013024,1336,F03083,"치자꽃, 생것",g,0.0,INVALID_QUANTITY;
+D014003,비빔밥(고추장),,,333.5,D014003,F02712,콩기름,Soybean oil,유지류,농진청,0.0,대두(콩),,,156,D014003,1145,F02712,콩기름,g,0.0,INVALID_QUANTITY;
+D014004,"비빔밥(고추장, 돼지고기)",,,324.5,D014004,F02712,콩기름,Soybean oil,유지류,농진청,0.0,대두(콩),,,157,D014004,1145,F02712,콩기름,g,0.0,INVALID_QUANTITY;
+D014006,산채비빔밥(고추장),,,333.5,D014006,F02712,콩기름,Soybean oil,유지류,농진청,0.0,대두(콩),,,159,D014006,1145,F02712,콩기름,g,0.0,INVALID_QUANTITY;
+D014012,해초비빔밥(고추장),,,325.0,D014012,F02825,"간장, 개량, 양조","Soy sauce, Fermented type",조미료류,농진청,0.0,대두(콩),,,165,D014012,1232,F02825,"간장, 개량, 양조",g,0.0,INVALID_QUANTITY;
+D014012,해초비빔밥(고추장),,,325.0,D014012,F02876,"소금, 천일염, 가는소금","Salt(Sogeum), Sun-dried salt, Fine salt",조미료류,농진청,0.0,,,,165,D014012,1266,F02876,"소금, 천일염, 가는소금",g,0.0,INVALID_QUANTITY;
+D014019,비빔밥,,,500.0,D014019,F02827,"간장, 재래","Soy sauce, Korean traditional type",조미료류,농진청,0.0,대두(콩),,,166,D014019,1234,F02827,"간장, 재래",g,0.0,INVALID_QUANTITY;
+D014019,비빔밥,,,500.0,D014019,F00394,"설탕, 백설탕","Sugar, White",당류,농진청,0.0,,,,166,D014019,234,F00394,"설탕, 백설탕",g,0.0,INVALID_QUANTITY;
+D014019,비빔밥,,,500.0,D014019,F02876,"소금, 천일염, 가는소금","Salt(Sogeum), Sun-dried salt, Fine salt",조미료류,농진청,0.0,,,,166,D014019,1266,F02876,"소금, 천일염, 가는소금",g,0.0,INVALID_QUANTITY;
+D014026,육회비빔밥,,,549.0,D014026,F02876,"소금, 천일염, 가는소금","Salt(Sogeum), Sun-dried salt, Fine salt",조미료류,농진청,0.0,,,,167,D014026,1266,F02876,"소금, 천일염, 가는소금",g,0.0,INVALID_QUANTITY;
+D014026,육회비빔밥,,,549.0,D014026,F02827,"간장, 재래","Soy sauce, Korean traditional type",조미료류,농진청,0.0,대두(콩),,,167,D014026,1234,F02827,"간장, 재래",g,0.0,INVALID_QUANTITY;
+D031067,수수들깨칼국수,,,496.5,D031067,F02069,"명태, 황태, 포, 말린것","Alaska pollock, Frozen and dried, Strip",어패류 및 기타 수산물,농진청,0.0,,,,566,D031067,916,F02069,"명태, 황태, 포, 말린것",g,0.0,INVALID_QUANTITY;
+D073023,연근쌈,,,125.2,D073023,F03083,"치자꽃, 생것","Cape-jasmine flower, Raw",기타,농진청,0.0,,,,1609,D073023,1336,F03083,"치자꽃, 생것",g,0.0,INVALID_QUANTITY;
+D073024,연근찹쌀찜,,,133.25,D073024,F03083,"치자꽃, 생것","Cape-jasmine flower, Raw",기타,농진청,0.0,,,,1610,D073024,1336,F03083,"치자꽃, 생것",g,0.0,INVALID_QUANTITY;
+D132110,냉이파강회,,,193.4,D132110,F03640,생수,"Water, Bottled",음료류,농진청,0.0,,,,2344,D132110,1419,F03640,생수,g,0.0,INVALID_QUANTITY;
+D135041,딸기샐러드,,,155.85,D135041,F01001,"양파, 생것","Onion(Yangpa), Raw",채소류,농진청,0.0,,,,2422,D135041,516,F01001,"양파, 생것",g,0.0,INVALID_QUANTITY;
+D135041,딸기샐러드,,,155.85,D135041,F02861,"식초, 발사믹","Vinegar(Sikcho), Balsamic",조미료류,농진청,0.0,,,,2422,D135041,1256,F02861,"식초, 발사믹",g,0.0,INVALID_QUANTITY;
+D135041,딸기샐러드,,,155.85,D135041,F02706,올리브유,Olive oil,유지류,농진청,0.0,,,,2422,D135041,1142,F02706,올리브유,g,0.0,INVALID_QUANTITY;
+D140059,백김치,,,60.0,D140059,F01233,"석이버섯, 말린것","Stone ear mushroom, Dried",버섯류,농진청,0.0,,,,2473,D140059,602,F01233,"석이버섯, 말린것",g,0.0,INVALID_QUANTITY;
+D140060,백김치,,,80.0,D140060,F01233,"석이버섯, 말린것","Stone ear mushroom, Dried",버섯류,농진청,0.0,,,,2474,D140060,602,F01233,"석이버섯, 말린것",g,0.0,INVALID_QUANTITY;
+D211100,귤 프리저브,,,52.0,D211100,F00173,"빵, 바게트","Bread, Baguette",곡류 및 그 제품,농진청,0.0,"난류,우유,밀",,,2869,D211100,100,F00173,"빵, 바게트",g,0.0,INVALID_QUANTITY;
