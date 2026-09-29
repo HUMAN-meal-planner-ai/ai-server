@@ -56,7 +56,9 @@ from dotenv import dotenv_values
 
 
 def load_menu_documents_from_db():
-    env_path = Path(__file__).resolve().parents[3] / "backend_new" / ".env"
+    # 백엔드와 AI 서버가 같은 Supabase를 사용하므로 실제 backend 폴더의
+    # 환경설정 파일에서 DB 접속 정보를 읽습니다.
+    env_path = Path(__file__).resolve().parents[3] / "backend" / ".env"
     env = dotenv_values(env_path)
 
     sql = """

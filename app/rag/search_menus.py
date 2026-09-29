@@ -15,7 +15,7 @@ from app.rag.query_parser import parse_query
 
 ENV_PATH = (
     Path(__file__).resolve().parents[3]
-    / "backend_new"
+    / "backend"
     / ".env"
 )
 

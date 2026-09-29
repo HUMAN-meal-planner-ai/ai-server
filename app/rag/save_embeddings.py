@@ -14,7 +14,7 @@ AI_SERVER_ROOT = Path(__file__).resolve().parents[2]
 
 ENV_PATH = (
     Path(__file__).resolve().parents[3]
-    / "backend_new"
+    / "backend"
     / ".env"
 )
 
