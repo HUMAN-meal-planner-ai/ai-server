@@ -89,8 +89,7 @@ SELECT
     regional.region
 FROM source_series source
 JOIN mealfit.price_series regional
-      ON regional.ingredient_id = source.ingredient_id
-     AND regional.source_name = 'KAMIS'
+      ON regional.source_name = 'KAMIS'
      AND regional.source_category_code IS NOT DISTINCT FROM source.source_category_code
      AND regional.source_item_code IS NOT DISTINCT FROM source.source_item_code
      AND regional.source_kind_code IS NOT DISTINCT FROM source.source_kind_code
