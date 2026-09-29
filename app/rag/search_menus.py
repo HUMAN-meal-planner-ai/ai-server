@@ -128,8 +128,12 @@ def get_menu_costs(
 def search_menus(
     query: str,
     authorization: str | None = None,
+    conditions: dict | None = None,
 ):
-    conditions = parse_query(query)
+    if conditions is None:
+        conditions = parse_query(query)
+    print("[QUERY]", query)
+    print("[CONDITIONS]", conditions)
 
     max_price = conditions.get(
         "max_price"
@@ -172,13 +176,13 @@ def search_menus(
         )
 
     allowed_menu_ids = None
-    menu_costs = {}
+
+    # 가격 조건이 없어도 원가 데이터는 항상 조회
+    menu_costs = get_menu_costs(
+        authorization=authorization
+    )
 
     if max_price is not None:
-        menu_costs = get_menu_costs(
-            authorization=authorization
-        )
-
         max_price_decimal = Decimal(
             str(max_price)
         )
@@ -212,6 +216,8 @@ def search_menus(
         + "]"
     )
 
+    MAX_DISTANCE = 0.45
+    
     sql = """
         SELECT
             m.menu_id,
@@ -220,6 +226,11 @@ def search_menus(
             m.upper_category,
             m.category,
             m.slot_type,
+            m.energy_kcal,
+            m.protein_g,
+            m.fat_g,
+            m.carbohydrate_g,
+            m.sodium_mg,
             r.embedding <=> %s::vector
                 AS distance
         FROM mealfit.rag_document r
@@ -298,7 +309,7 @@ def search_menus(
 
     sql += """
         ORDER BY distance
-        LIMIT 8
+        LIMIT 30
     """
 
     env = get_env()
@@ -328,28 +339,90 @@ def search_menus(
         upper_category,
         sub_category,
         slot_type,
+        energy_kcal,
+        protein_g,
+        fat_g,
+        carbohydrate_g,
+        sodium_mg,
         distance,
     ) in rows:
 
-        cost = menu_costs.get(
-            menu_id
+        distance_float = float(distance)
+        similarity = (1 - distance_float) * 100
+
+        print(
+            f"[RAG] {name} | "
+            f"distance={distance_float:.4f} | "
+            f"similarity={similarity:.1f}%"
         )
 
-        results.append({
-            "menu_id": menu_id,
-            "menu_code": menu_code,
-            "name": name,
-            "main_category": upper_category,
-            "sub_category": sub_category,
-            "slot_type": slot_type,
-            "cost_per_person": (
-                float(cost)
-                if cost is not None
-                else None
-            ),
-            "distance": float(
-                distance
-            ),
-        })
+        cost = menu_costs.get(menu_id)
 
-    return results
+        # 유사도 40% 미만 제외
+        if similarity < 40:
+            continue
+
+        if similarity < 40:
+            continue
+
+        # 가격 조건이 있는 검색에서는
+        # 정상 가격 데이터가 반드시 있어야 함
+        if max_price is not None:
+            if cost is None or cost <= 0:
+                continue
+
+        # 가격 조건이 없는 검색에서는
+        # 실제 0원 데이터만 제외하고 가격 미등록 메뉴는 허용
+        else:
+            if cost is not None and cost <= 0:
+                continue
+
+        results.append({
+        "menu_id": menu_id,
+        "menu_code": menu_code,
+        "name": name,
+        "main_category": upper_category,
+        "sub_category": sub_category,
+        "slot_type": slot_type,
+        "cost_per_person": (
+            float(cost)
+            if cost is not None
+            else None
+        ),
+        "energy_kcal": (
+            float(energy_kcal)
+            if energy_kcal is not None
+            else None
+        ),
+        "protein_g": (
+            float(protein_g)
+            if protein_g is not None
+            else None
+        ),
+        "fat_g": (
+            float(fat_g)
+            if fat_g is not None
+            else None
+        ),
+        "carbohydrate_g": (
+            float(carbohydrate_g)
+            if carbohydrate_g is not None
+            else None
+        ),
+        "sodium_mg": (
+            float(sodium_mg)
+            if sodium_mg is not None
+            else None
+        ),
+        "distance": distance_float,
+        "similarity": round(similarity, 1),
+    })
+
+    # 유사도 높은 순
+    results.sort(
+        key=lambda menu: menu["similarity"],
+        reverse=True,
+    )
+
+    # 최종 3개만 반환
+    return results[:30]
