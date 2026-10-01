@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.menu_search import router as menu_search_router
 from app.api.routes.price_prediction import router as price_prediction_router
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(title="MealFit AI Server")
 
