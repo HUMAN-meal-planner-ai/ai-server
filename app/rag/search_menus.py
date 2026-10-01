@@ -13,11 +13,7 @@ from FlagEmbedding import BGEM3FlagModel
 from app.rag.query_parser import parse_query
 
 
-ENV_PATH = (
-    Path(__file__).resolve().parents[3]
-    / "backend"
-    / ".env"
-)
+ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
 
 
 def get_env():
@@ -134,6 +130,10 @@ def search_menus(
         conditions = parse_query(query)
     print("[QUERY]", query)
     print("[CONDITIONS]", conditions)
+
+    min_price = conditions.get(
+        "min_price"
+    )
 
     max_price = conditions.get(
         "max_price"
@@ -362,20 +362,9 @@ def search_menus(
         if similarity < 40:
             continue
 
-        if similarity < 40:
+        # 가격 정보가 없거나 0원 이하인 메뉴는 항상 제외
+        if cost is None or cost <= 0:
             continue
-
-        # 가격 조건이 있는 검색에서는
-        # 정상 가격 데이터가 반드시 있어야 함
-        if max_price is not None:
-            if cost is None or cost <= 0:
-                continue
-
-        # 가격 조건이 없는 검색에서는
-        # 실제 0원 데이터만 제외하고 가격 미등록 메뉴는 허용
-        else:
-            if cost is not None and cost <= 0:
-                continue
 
         results.append({
         "menu_id": menu_id,
