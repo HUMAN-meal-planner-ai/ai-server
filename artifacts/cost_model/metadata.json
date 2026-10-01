@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-10-01T16:09:13.985760",
+  "menu_risk_model": {
+    "model_type": "LightGBMClassifier",
+    "version": "v1.0",
+    "target_classes": {
+      "0": "SAFE",
+      "1": "CAUTION",
+      "2": "WARNING"
+    },
+    "features": [
+      "category_code",
+      "ingredient_count",
+      "cur_menu_cost",
+      "menu_cost_increase_rate",
+      "max_ingredient_increase_rate",
+      "max_contribution_rate",
+      "top_driver_risk",
+      "high_risk_ingredient_count",
+      "caution_ingredient_count",
+      "avg_price_volatility"
+    ],
+    "test_accuracy": 0.9996275303643725,
+    "test_macro_f1": 0.999212076463114
+  },
+  "mealplan_risk_model": {
+    "model_type": "LightGBMClassifier",
+    "version": "v1.0",
+    "target_classes": {
+      "0": "SAFE",
+      "1": "CAUTION",
+      "2": "WARNING",
+      "3": "CRITICAL"
+    },
+    "features": [
+      "total_menu_count",
+      "warning_menu_ratio",
+      "caution_menu_ratio",
+      "risk_cost_ratio",
+      "warning_cost_ratio",
+      "total_expected_cost",
+      "budget_usage_ratio",
+      "avg_menu_cost_increase_rate",
+      "max_menu_cost_increase_rate"
+    ],
+    "test_accuracy": 0.9966666666666667,
+    "test_macro_f1": 0.997808005707634
+  }
+}
