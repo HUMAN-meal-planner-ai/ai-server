@@ -3,9 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.menu_search import router as menu_search_router
 from app.api.routes.price_prediction import router as price_prediction_router
-from dotenv import load_dotenv
-
-load_dotenv()
+from app.api.routes.cost_risk import router as cost_risk_router
 
 app = FastAPI(title="MealFit AI Server")
 
@@ -16,8 +14,8 @@ app.add_middleware(
         "http://localhost:5173",
         "http://127.0.0.1:5173",
     ],
-    allow_methods=["POST","OPTIONS",],
-    allow_headers=["Content-Type", "Authorization",],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # 메뉴 검색 API
@@ -25,3 +23,7 @@ app.include_router(menu_search_router)
 
 # 가격 예측 API
 app.include_router(price_prediction_router)
+
+# 원가 및 식단 위험도 분류 API
+app.include_router(cost_risk_router)
+
