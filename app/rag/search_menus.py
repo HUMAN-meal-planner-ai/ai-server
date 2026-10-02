@@ -128,6 +128,7 @@ def search_menus(
 ):
     if conditions is None:
         conditions = parse_query(query)
+
     print("[QUERY]", query)
     print("[CONDITIONS]", conditions)
 
@@ -217,7 +218,7 @@ def search_menus(
     )
 
     MAX_DISTANCE = 0.45
-    
+
     sql = """
         SELECT
             m.menu_id,
@@ -348,7 +349,9 @@ def search_menus(
     ) in rows:
 
         distance_float = float(distance)
-        similarity = (1 - distance_float) * 100
+        similarity = (
+            1 - distance_float
+        ) * 100
 
         print(
             f"[RAG] {name} | "
@@ -367,51 +370,54 @@ def search_menus(
             continue
 
         results.append({
-        "menu_id": menu_id,
-        "menu_code": menu_code,
-        "name": name,
-        "main_category": upper_category,
-        "sub_category": sub_category,
-        "slot_type": slot_type,
-        "cost_per_person": (
-            float(cost)
-            if cost is not None
-            else None
-        ),
-        "energy_kcal": (
-            float(energy_kcal)
-            if energy_kcal is not None
-            else None
-        ),
-        "protein_g": (
-            float(protein_g)
-            if protein_g is not None
-            else None
-        ),
-        "fat_g": (
-            float(fat_g)
-            if fat_g is not None
-            else None
-        ),
-        "carbohydrate_g": (
-            float(carbohydrate_g)
-            if carbohydrate_g is not None
-            else None
-        ),
-        "sodium_mg": (
-            float(sodium_mg)
-            if sodium_mg is not None
-            else None
-        ),
-        "distance": distance_float,
-        "similarity": round(similarity, 1),
-    })
+            "menu_id": menu_id,
+            "menu_code": menu_code,
+            "name": name,
+            "main_category": upper_category,
+            "sub_category": sub_category,
+            "slot_type": slot_type,
+            "cost_per_person": (
+                float(cost)
+                if cost is not None
+                else None
+            ),
+            "energy_kcal": (
+                float(energy_kcal)
+                if energy_kcal is not None
+                else None
+            ),
+            "protein_g": (
+                float(protein_g)
+                if protein_g is not None
+                else None
+            ),
+            "fat_g": (
+                float(fat_g)
+                if fat_g is not None
+                else None
+            ),
+            "carbohydrate_g": (
+                float(carbohydrate_g)
+                if carbohydrate_g is not None
+                else None
+            ),
+            "sodium_mg": (
+                float(sodium_mg)
+                if sodium_mg is not None
+                else None
+            ),
+            "distance": distance_float,
+            "similarity": round(
+                similarity,
+                1,
+            ),
+        })
 
-    # 유사도 높은 순
+    # 유사도 높은 순으로 정렬
     results.sort(
         key=lambda menu: menu["similarity"],
         reverse=True,
     )
 
-    # 최종 3개만 반환
+    # 최종 30개 반환
     return results[:30]
