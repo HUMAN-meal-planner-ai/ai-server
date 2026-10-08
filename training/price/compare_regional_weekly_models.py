@@ -24,7 +24,7 @@ from training.price.evaluation_metrics import calculate_metrics
 
 
 DEFAULT_SNAPSHOT = (
-    DEFAULT_OUTPUT_DIRECTORY / "regional_weekly_features_as_of_2026-09-15.csv"
+    DEFAULT_OUTPUT_DIRECTORY / "regional_weekly_features_as_of_2026-09-24.csv"
 )
 DEFAULT_EVALUATION_DIRECTORY = Path(__file__).resolve().parent / "evaluation"
 NUMERIC_FEATURES = (
