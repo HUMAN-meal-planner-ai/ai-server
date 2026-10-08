@@ -144,18 +144,46 @@ class CostRiskModelBundle:
         if not items:
             return []
 
-        records = [item.model_dump() for item in items]
-        df = pd.DataFrame(records)
+        results = []
+        to_predict_indices = []
+        to_predict_features = []
 
-        X = df[self._mealplan_feature_names]
+        # 1. 빈 식단(total_menu_count == 0)은 추론 없이 즉시 SAFE로 처리 (IT-D03 대응)
+        for i, item in enumerate(items):
+            if item.total_menu_count <= 0 or item.total_expected_cost <= 0:
+                results.append(
+                    MealPlanRiskPrediction(
+                        plan_id=item.plan_id,
+                        facility_id=item.facility_id,
+                        risk_level="SAFE",
+                        risk_code=0,
+                        risk_score=0.0,
+                        confidence=1.0,
+                        probabilities={"SAFE": 1.0, "CAUTION": 0.0, "WARNING": 0.0, "CRITICAL": 0.0},
+                    )
+                )
+            else:
+                to_predict_indices.append(i)
+                to_predict_features.append(item.model_dump())
+                results.append(None)  # Placeholder
+
+        if not to_predict_indices:
+            return results
+
+        # 2. 유효한 식단에 대해서만 모델 추론 수행
+        df = pd.DataFrame(to_predict_features)
+        for col in self._mealplan_feature_names:
+            if col not in df.columns:
+                df[col] = 0.0
+        X = df[self._mealplan_feature_names].fillna(0.0)
 
         preds = self._mealplan_model.predict(X)
         probas = self._mealplan_model.predict_proba(X)
 
-        results = []
-        for i, item in enumerate(items):
-            code = int(preds[i])
-            prob_arr = probas[i]
+        for p_idx, orig_idx in enumerate(to_predict_indices):
+            item = items[orig_idx]
+            code = int(preds[p_idx])
+            prob_arr = probas[p_idx]
             level = self._mealplan_classes.get(code, "UNKNOWN")
             confidence = float(np.max(prob_arr))
 
@@ -173,16 +201,14 @@ class CostRiskModelBundle:
                 for c_idx, p in enumerate(prob_arr)
             }
 
-            results.append(
-                MealPlanRiskPrediction(
-                    plan_id=item.plan_id,
-                    facility_id=item.facility_id,
-                    risk_level=level,
-                    risk_code=code,
-                    risk_score=risk_score,
-                    confidence=round(confidence, 4),
-                    probabilities=prob_dict,
-                )
+            results[orig_idx] = MealPlanRiskPrediction(
+                plan_id=item.plan_id,
+                facility_id=item.facility_id,
+                risk_level=level,
+                risk_code=code,
+                risk_score=risk_score,
+                confidence=round(confidence, 4),
+                probabilities=prob_dict,
             )
 
         return results
