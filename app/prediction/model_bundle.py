@@ -106,8 +106,7 @@ class WeeklyPriceModelBundle:
             for value in self._manifest["supported_series_ids"]
         }
 
-    def predict(
-        self,
+    def predict(self,
         features: pd.DataFrame,
     ) -> list[WeeklyPrediction]:
         """
