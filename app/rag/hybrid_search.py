@@ -21,26 +21,38 @@ def tokenize(text: str) -> list[str]:
 
 
 def bm25_search(query: str, documents: list[dict], top_k=30):
-    """메뉴 문서를 BM25 점수순으로 검색"""
-    if not documents or not query.strip():
+    """BM25 기반 키워드 메뉴 검색"""
+    if not documents or not query.strip() or top_k <= 0:
         return []
 
-    corpus = [tokenize(doc["text"]) for doc in documents]
+    corpus = [
+        tokenize(str(doc.get("text") or ""))
+        for doc in documents
+    ]
+
+    query_tokens = tokenize(query)
+
+    if not any(corpus) or not query_tokens:
+        return []
+
     model = BM25Okapi(corpus)
-    scores = model.get_scores(tokenize(query))
+    scores = model.get_scores(query_tokens)
+
+    # BM25 점수가 0이어도 실제 키워드가 일치하면 포함
+    query_set = set(query_tokens)
+
+    matched = [
+        i for i, tokens in enumerate(corpus)
+        if query_set.intersection(tokens)
+    ]
 
     ranked = sorted(
-        range(len(documents)),
+        matched,
         key=lambda i: scores[i],
         reverse=True,
     )
 
-    return [
-        documents[i]
-        for i in ranked[:top_k]
-        if scores[i] > 0
-    ]
-
+    return [documents[i] for i in ranked[:top_k]]
 
 def rrf_fusion(vector_results, bm25_results, k=60):
     """Vector와 BM25 검색 순위를 RRF로 통합"""
